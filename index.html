@@ -1725,6 +1725,11 @@ U.forEach(([u,label])=>{
   btn.onclick=()=>{const o=sec.classList.toggle('open');const ph=document.getElementById('p-home');if(ph)ph.classList.toggle('accopen',!!document.querySelector('.acc-sec.open'));btn.setAttribute('aria-expanded',o);btn.querySelector('.as').textContent=o?'−':'+'};
   sec.append(btn,body);acc.appendChild(sec);
 });
+function resetAcc(){acc.querySelectorAll('.acc-sec.open').forEach(s=>{s.classList.remove('open');const b=s.querySelector('.acc-h');b.setAttribute('aria-expanded','false');b.querySelector('.as').textContent='+'});const ph=document.getElementById('p-home');if(ph){ph.classList.remove('accopen');ph.scrollTop=0}}
+const ph=document.getElementById('p-home');
+if(ph){let was=ph.classList.contains('show');new MutationObserver(()=>{const now=ph.classList.contains('show');if(now&&!was)resetAcc();was=now}).observe(ph,{attributes:true,attributeFilter:['class']})}
+window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(!h)resetAcc()});
+window.addEventListener('pageshow',()=>{if(!location.hash.replace('#',''))resetAcc()});
 })();
 </script></body>
 </html>
