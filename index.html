@@ -515,7 +515,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--wht);color:var(--blk);
 #p-home .acc-h .ak{margin-top:2px}
 #p-home.accopen .acc{flex:none}
 #p-home .info .ib{padding:clamp(6px,1.2vh,14px) 8px}#p-home .ibt{font-size:9px;letter-spacing:1.5px}
-#p-home:not(.accopen){padding-bottom:46px}
+#p-home{bottom:auto;height:100vh;height:100dvh;padding-bottom:var(--eyadh,46px)}
 }
 @media (max-height:620px) and (max-width:900px){
 #p-home .hero-rule{display:none}
@@ -1722,11 +1722,12 @@ U.forEach(([u,label])=>{
     body.appendChild(g)};
   if(main.length)addGrid('',main);
   Object.keys(groups).forEach(gk=>addGrid(GROUPS[gk]||nice(gk),groups[gk]));
-  btn.onclick=()=>{const o=sec.classList.toggle('open');const ph=document.getElementById('p-home');if(ph)ph.classList.toggle('accopen',!!document.querySelector('.acc-sec.open'));btn.setAttribute('aria-expanded',o);btn.querySelector('.as').textContent=o?'−':'+'};
+  btn.onclick=()=>{const o=sec.classList.toggle('open');const ph=document.getElementById('p-home');if(ph)ph.classList.toggle('accopen',!!document.querySelector('.acc-sec.open'));if(o&&ph){requestAnimationFrame(()=>requestAnimationFrame(()=>{const top=sec.getBoundingClientRect().top-ph.getBoundingClientRect().top+ph.scrollTop;ph.scrollTo({top:Math.max(0,top),behavior:'smooth'})}))}btn.setAttribute('aria-expanded',o);btn.querySelector('.as').textContent=o?'−':'+'};
   sec.append(btn,body);acc.appendChild(sec);
 });
 function resetAcc(){acc.querySelectorAll('.acc-sec.open').forEach(s=>{s.classList.remove('open');const b=s.querySelector('.acc-h');b.setAttribute('aria-expanded','false');b.querySelector('.as').textContent='+'});const ph=document.getElementById('p-home');if(ph){ph.classList.remove('accopen');ph.scrollTop=0}}
 const ph=document.getElementById('p-home');
+function eyadH(){const b=document.querySelector('.global-eyad');if(ph&&b&&b.offsetHeight)ph.style.setProperty('--eyadh',b.offsetHeight+'px')}eyadH();addEventListener('resize',eyadH);setTimeout(eyadH,800);
 if(ph){let was=ph.classList.contains('show');new MutationObserver(()=>{const now=ph.classList.contains('show');if(now&&!was)resetAcc();was=now}).observe(ph,{attributes:true,attributeFilter:['class']})}
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(!h)resetAcc()});
 window.addEventListener('pageshow',()=>{if(!location.hash.replace('#',''))resetAcc()});
